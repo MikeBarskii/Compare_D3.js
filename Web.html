@@ -40,7 +40,8 @@
             <div class="block2 itog">
                 <iframe id="result_iframe" class="iframeblock"></iframe>
                 <a class="btn newinfo" href="#"><i class="fa fa-info-circle"></i>Информация</a>
-                <a class="btn checkbtn" onclick="compare()"><i class="fa fa-thumbs-up" ></i>CHECK</a>
+                <a class="btn checkbtn" onclick="compare()"><i class="fa fa-thumbs-up"></i>CHECK</a>
+                <button class="btn btn-default procent_result" id="result_button">0%</button>
             </div>
         </div>
     </div>
@@ -137,6 +138,8 @@
                             var result_string = result_canvas.toDataURL("image/jpeg", 1.0);
                             resemble(result_string).compareTo(example_string).onComplete(function (data) {
                                 console.log(data.rawMisMatchPercentage);
+                                console.log(document.getElementById('result_button'));
+                                document.getElementById('result_button').innerHTML = (100 - data.rawMisMatchPercentage) + ' %';
 //                                var snackbarContainer = document.querySelector('#compare-result');
 //                                var text_data;
 //                                var masmatch_percentage = data.rawMisMatchPercentage;
