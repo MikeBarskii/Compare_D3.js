@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D3.js</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
 <div class="container">
@@ -35,21 +35,24 @@
             </div>
             <div class="block2 example">
                 <span class="block_name">Образец</span>
-                <iframe id="example_iframe" class="show_example" ></iframe>
+                <iframe id="example_iframe" class="show_example"></iframe>
             </div>
             <div class="block2 itog">
                 <iframe id="result_iframe" class="check"></iframe>
                 <a class="btn newinfo" href="#"><i class="fa fa-info-circle"></i>Информация</a>
-                <a class="btn checkbtn" href="#"><i class="fa fa-thumbs-up"></i>CHECK</a>
+                <a class="btn checkbtn" href="#"><i class="fa fa-thumbs-up" onclick="compareCanvas()"></i>CHECK</a>
             </div>
         </div>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script src="js/html2canvas.js"></script>
-    <script src="node_modules/resemblejs/resemble.js"></script>
+    <script src="js/resemble.js"></script>
     <script src="ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
     <script>
+        var example_canvas;
+        var result_canvas;
+
         var example_html =
                 '<html>\n' +
                 '<head>\n' +
@@ -123,30 +126,37 @@
             in_result_iframe.close();
         });
 
-        var sample_canvas;
-        var result_canvas;
-        var bar_match;
+        function compareCanvas() {
+            html2canvas(in_example_iframe.body, {
+                onrendered: function (ex_canvas) {
+                    example_canvas = ex_canvas;
+                    html2canvas(in_result_iframe.body, {
+                        onrendered: function (res_canvas) {
+                            result_canvas = res_canvas;
+                            var example_string = example_canvas.toDataURL("image/jpeg", 1.0);
+                            var result_string = result_canvas.toDataURL("image/jpeg", 1.0);
+                            resemble(example_string).compareTo(result_string).onComplete(function (data) {
+                                console.log(data);
+//                                var snackbarContainer = document.querySelector('#compare-result');
+//                                var text_data;
+//                                var masmatch_percentage = data.rawMisMatchPercentage;
+//                                if (masmatch_percentage == 0) {
+//                                    text_data = {message: "Данные идентичны. Можете переходить к следующему заданию"};
+//                                    $("#btn-next").prop("disabled", false);
+//                                    $("#i-next").removeClass("md-inactive");
+//                                } else {
+//                                    text_data = {message: "Данные не совпадают. Попорбуйте еще раз"};
+//                                }
+//                                snackbarContainer.MaterialSnackbar.showSnackbar(text_data);
+//                                bar_match.MaterialProgress.setProgress(100 - masmatch_percentage);
+//                                $(".card.match .title").text("Совпадение данных: " + Math.round(100 - masmatch_percentage) + "%");
+                            });
 
-        document.querySelector('#bar-match').addEventListener('mdl-componentupgraded', function () {
-            bar_match = this;
-        });
-
-//        var html_editor = ace.edit("html_editor");
-//        html_editor.setTheme("ace/theme/github");
-//        html_editor.getSession().setMode("ace/mode/html");
-//
-//
-//        html_editor.getSession().on('change', function () {
-//            in_iframe.open();
-//            in_iframe.write(html_editor.getValue() + "<script>" + js_editor.getValue() + "<\/script>");
-//            in_iframe.close();
-//        });
-//
-//        js_editor.getSession().on('change', function () {
-//            in_iframe.open();
-//            in_iframe.write(html_editor.getValue() + "<script>" + js_editor.getValue() + "<\/script>");
-//            in_iframe.close();
-//        });
+                        }
+                    });
+                }
+            });
+        }
     </script>
 </div>
 </body>
