@@ -1,0 +1,126 @@
+body{
+    margin: 0;
+    font-family: 'Helvetica', sans-serif;
+    min-width: auto;
+}
+a{
+    text-decoration:none;
+}
+.displayb:hover, .block2:hover, .massiv:hover{
+ /* элемент тени если наведен курсор */ 
+-webkit-box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 0px rgba(0, 0, 0, 0.3); 
+ -moz-box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.5), 0 1px 0px rgba(0, 0, 0, 0.3); 
+ box-shadow: 0 15px 10px -10px rgba(0, 0, 0, 0.3), 0 1px 0px rgba(0, 0, 0, 0.1); 
+ /* элемент тени если наведен курсор конец */ 
+ }
+.main-header{
+    background: rgba(26,26,26,1);
+    color: white;
+    padding:20px 0;
+    margin-bottom: 20px;
+}
+.header-container{
+    text-align: center;
+}
+
+.blocks{
+    float: left;
+    width:560px;
+    min-height: 1px;
+}
+.displayb{
+    min-height: 320px;
+    margin-bottom: 20px;
+    border:2px solid #2B587A;
+    border-radius: 5px;
+    position: relative;
+}
+.row{
+    width:1170px;
+    margin-left: auto;
+    margin-right:auto;
+    min-height: 700px;
+}
+.check{
+    width: 100%;
+    min-height: 210px;
+    border: 0;
+    border-bottom: 2px solid #ccc;
+}
+.show_example{
+    border:0;
+    min-height: 226px;
+    text-align: left;
+    position: absolute;
+    width: 100%;
+}
+.infotype {
+    min-height: 292px;
+    text-align: left;
+    position: absolute;
+    width: 100%;
+}
+.btn.checkbtn:hover{
+    background:#5DE63B;
+}
+.block_name{
+    margin:5px 20px 5px 0;
+    text-align: right;
+    display: block;
+    font-weight: 600;
+}
+.massiv{
+    border: 2px solid #ccc;
+    float: left;
+    margin-left: 20px;
+    position: relative;
+    min-height: 100px;
+    border-radius: 5px;
+    width:570px;
+    margin-bottom: 20px;   
+}
+.block2{
+    border: 2px solid #ccc;
+    float: left;
+    margin-left: 20px;
+    position: relative;
+    min-height: 258px;
+    border-radius: 5px;
+    width:570px;
+    margin-bottom: 20px;
+}
+.btn{
+    display: inline-block;
+    padding: 4px 12px;
+    margin: 3px 0 6px 10px;
+    font-size: 14px;
+    line-height: 20px;
+    color: #333;
+    text-align: center;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.fa {
+    margin-right:4px;
+}
+.footer{
+    text-align: center;
+    color:white;
+    background: #2b2b2b;
+}
+.infooter{
+    font-size: 0.9rem;
+    border-bottom: 1px solid white;
+    padding:20px 0;
+    margin:auto;
+}
+.infooter a{
+    color: white;
+}
+.infooter a:after{
+    margin-top: -5px;
+    display:block;
+    content:"___________";
+}
