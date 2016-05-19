@@ -31,7 +31,7 @@
         <div class="tasks">
             <div class="massiv">
                 <span class="block_name">Massiv</span>
-                <div class="block_massiv"></div>
+                <div class="block_massiv">var data = [5, 8, 13, 21, 34, 18];</div>
             </div>
             <div class="block2 example">
                 <span class="block_name">Образец</span>
@@ -39,9 +39,29 @@
             </div>
             <div class="block2 itog">
                 <iframe id="result_iframe" class="iframeblock"></iframe>
-                <a class="btn newinfo" href="#"><i class="fa fa-info-circle"></i>Информация</a>
-                <a class="btn checkbtn" onclick="compare()"><i class="fa fa-thumbs-up"></i>CHECK</a>
+                <label class="btn newinfo" style="font-family: 'Helvetica', sans-serif;" for="modal-1">Информация</label>
+                <button class="btn checkbtn" onclick="compare()"><i class="fa fa-thumbs-up"></i>CHECK</button>
                 <button class="btn btn-default procent_result" id="result_button">0%</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Window -->
+    <div class="modal">
+        <input class="modal-open" id="modal-1" type="checkbox" hidden>
+        <div class="modal-wrap" aria-hidden="true" role="dialog">
+            <label class="modal-overlay" for="modal-1"></label>
+            <div class="modal-dialog">
+                <div class="modal-header">
+                    <h2>Модальное окно на CSS! :-)</h2>
+                    <label class="btn-close" for="modal-1" aria-hidden="true">×</label>
+                </div>
+                <div class="modal-body">
+                    <p>Это всего лишь один небольшой пример :D</p>
+                </div>
+                <div class="modal-footer">
+                    <label class="btn btn-primary" for="modal-1">Отлично!</label>
+                </div>
             </div>
         </div>
     </div>
@@ -128,6 +148,7 @@
         });
 
         function compare() {
+            <!-- Iframe to Canvas-->
             html2canvas(in_example_iframe.body, {
                 onrendered: function (ex_canvas) {
                     example_canvas = ex_canvas;
@@ -136,25 +157,10 @@
                             result_canvas = res_canvas;
                             var example_string = example_canvas.toDataURL("image/jpeg", 1.0);
                             var result_string = result_canvas.toDataURL("image/jpeg", 1.0);
+                            <!-- Compare 2 Iframes -->
                             resemble(result_string).compareTo(example_string).onComplete(function (data) {
-                                console.log(data.rawMisMatchPercentage);
-                                console.log(document.getElementById('result_button'));
                                 document.getElementById('result_button').innerHTML = (100 - data.rawMisMatchPercentage) + ' %';
-//                                var snackbarContainer = document.querySelector('#compare-result');
-//                                var text_data;
-//                                var masmatch_percentage = data.rawMisMatchPercentage;
-//                                if (masmatch_percentage == 0) {
-//                                    text_data = {message: "Данные идентичны. Можете переходить к следующему заданию"};
-//                                    $("#btn-next").prop("disabled", false);
-//                                    $("#i-next").removeClass("md-inactive");
-//                                } else {
-//                                    text_data = {message: "Данные не совпадают. Попорбуйте еще раз"};
-//                                }
-//                                snackbarContainer.MaterialSnackbar.showSnackbar(text_data);
-//                                bar_match.MaterialProgress.setProgress(100 - masmatch_percentage);
-//                                $(".card.match .title").text("Совпадение данных: " + Math.round(100 - masmatch_percentage) + "%");
                             });
-
                         }
                     });
                 }
