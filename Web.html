@@ -31,7 +31,9 @@
         <div class="tasks">
             <div class="massiv">
                 <span class="block_name">Massiv</span>
-                <div class="block_massiv">var data = [5, 8, 13, 21, 34, 18];</div>
+                <div class="block_massiv" style="text-align: center;margin-top: 15px;">[3, 6, 2, 7, 5, 2, 0, 3, 8, 9, 2,
+                    5, 9, 3, 6, 3, 6, 2, 7, 5, 2, 1, 3, 8, 9, 2, 5, 9, 2, 7]
+                </div>
             </div>
             <div class="block2 example">
                 <span class="block_name">Образец</span>
@@ -54,11 +56,12 @@
             <label class="modal-overlay" for="modal-1"></label>
             <div class="modal-dialog">
                 <div class="modal-header">
-                    <h2>Модальное окно на CSS! :-)</h2>
+                    <h2>Информация</h2>
                     <label class="btn-close" for="modal-1" aria-hidden="true">×</label>
                 </div>
                 <div class="modal-body">
-                    <p>Это всего лишь один небольшой пример :D</p>
+                    <p>Итак, мы изучаем D3.js </p>
+                    <p>Чего же мы хотим достичь?</p>
                 </div>
                 <div class="modal-footer">
                     <label class="btn btn-primary" for="modal-1">Отлично!</label>
@@ -106,15 +109,7 @@
                 '   fill: none;\n' +
                 '   stroke: #000;\n' +
                 '}\n' +
-                '\t\t.chart div {\n' +
-                '\t\t\tfont: 10px sans-serif;\n' +
-                '\t\t\tbackground-color: steelblue;\n' +
-                '\t\t\ttext-align: right;\n' +
-                '\t\t\tpadding: 3px;\n' +
-                '\t\t\tmargin: 1px;\n' +
-                '\t\t\tcolor: white;\n' +
-                '\t\t}\n' +
-                '\t</style>\n' +
+                '</style>\n' +
                 '</head>\n' +
                 '<body>\n' +
                 '\t<div id="graph" class="aGraph" style="position:absolute;top:0px;left:0; float:left;"></div>\n' +
@@ -126,13 +121,9 @@
         var array_data = 'var data = [3, 6, 2, 7, 5, 2, 0, 3, 8, 9, 2, 5, 9, 3, 6, 3, 6, 2, 7, 5, 2, 1, 3, 8, 9, 2, 5, 9, 2, 7];';
 
         var example_js =
-                // define dimensions of graph
-                'var m = [80, 80, 80, 80]; // margins\n' +
-                'var w = 1000 - m[1] - m[3]; // width\n' +
-                'var h = 400 - m[0] - m[2]; // height\n' +
-
-//        // create a simple data array that we'll plot with a line (this array represents only the Y values, X will just be the index location)
-//        var data = [3, 6, 2, 7, 5, 2, 0, 3, 8, 9, 2, 5, 9, 3, 6, 3, 6, 2, 7, 5, 2, 1, 3, 8, 9, 2, 5, 9, 2, 7];
+                'var m = [20, 20, 20, 20]; // margins\n' +
+                'var w = 500 - m[1] - m[3]; // width\n' +
+                'var h = 220 - m[0] - m[2]; // height\n' +
 
                 // X scale will fit all values from data[] within pixels 0-w
                 'var x = d3.scale.linear().domain([0, data.length]).range([0, w]);\n' +
@@ -143,28 +134,19 @@
 
                 // create a line function that can convert data[] into x and y points
                 'var line = d3.svg.line()\n' +
-                // assign the X function to plot our line as we wish
                 '      .x(function(d,i) {\n' +
-                // verbose logging to show what's actually being done
-                //            console.log('Plotting X value for data point: ' + d + ' using index: ' + i + ' to be at: ' + x(i) + ' using our xScale.');
-                // return the X coordinate where we want to plot this datapoint
                 '            return x(i);\n' +
                 '        })\n' +
                 '        .y(function(d) {\n' +
-                // verbose logging to show what's actually being done
-                //console.log('Plotting Y value for data point: ' + d + ' to be at: ' + y(d) + " using our yScale.");
-                // return the Y coordinate where we want to plot this datapoint
                 '             return y(d);\n' +
                 '        })\n' +
-
                 // Add an SVG element with the desired dimensions and margin.
                 ' var graph = d3.select("#graph").append("svg:svg")\n' +
                 '       .attr("width", w + m[1] + m[3])\n' +
                 '       .attr("height", h + m[0] + m[2])\n' +
                 '       .append("svg:g")\n' +
                 '       .attr("transform", "translate(" + m[3] + "," + m[0] + ")");\n' +
-
-                // create yAxis
+                '\n' +
                 'var xAxis = d3.svg.axis().scale(x).tickSize(-h).tickSubdivide(true);\n' +
                 // Add the x-axis.
                 'graph.append("svg:g")\n' +
@@ -172,8 +154,6 @@
                 '       .attr("transform", "translate(0," + h + ")")\n' +
                 '        .call(xAxis);\n' +
 
-
-                // create left yAxis
                 ' var yAxisLeft = d3.svg.axis().scale(y).ticks(4).orient("left");\n' +
                 // Add the y-axis to the left
                 'graph.append("svg:g")\n' +
@@ -181,23 +161,7 @@
                 '        .attr("transform", "translate(-25,0)")\n' +
                 '        .call(yAxisLeft);\n' +
 
-                // Add the line by appending an svg:path element with the data line we created above
-                // do this AFTER the axes above so that the line is above the tick-lines
                 ' graph.append("svg:path").attr("d", line(data));'
-
-
-        //        var example_js =
-        //                'var x = d3.scale.linear()\n' +
-        //                '\t.domain([0, d3.max(data)])\n' +
-        //                '\t.range([0, 578]);\n' +
-        //                '\n' +
-        //                'd3.select(".chart")\n' +
-        //                '\t.selectAll("div")\n' +
-        //                '\t.data(data)\n' +
-        //                '\t.enter().append("div")\n' +
-        //                '\t.style("width", function(d) { return x(d) + "px"; })\n' +
-        //                '\t.text(function(d) { return d; });'
-
 
         var result_iframe = document.getElementById('result_iframe');
         var in_result_iframe = result_iframe.contentDocument || result_iframe.contentWindow.document;
@@ -213,16 +177,48 @@
         js_editor.setTheme("ace/theme/github");
         js_editor.getSession().setMode("ace/mode/javascript");
         js_editor.setValue(
-                'var x = d3.scale.linear()\n' +
-                '\t.domain([0, d3.max(data)])\n' +
-                '\t.range([0, 578]);\n' +
-                '\n' +
-                'd3.select(".chart")\n' +
-                '\t.selectAll("div")\n' +
-                '\t.data(data)\n' +
-                '\t.enter().append("div")\n' +
-                '\t.style("width", function(d) { return x(d) + "px"; })\n' +
-                '\t.text(function(d) { return d; });'
+                'var m = [20, 20, 20, 20]; // margins\n' +
+                'var w = 500 - m[1] - m[3]; // width\n' +
+                'var h = 220 - m[0] - m[2]; // height\n' +
+
+                // X scale will fit all values from data[] within pixels 0-w
+                'var x = d3.scale.linear().domain([0, data.length]).range([0, w]);\n' +
+                // Y scale will fit values from 0-10 within pixels h-0 (Note the inverted domain for the y-scale: bigger is up!)
+                'var y = d3.scale.linear().domain([0, 10]).range([h, 0]);\n' +
+                // automatically determining max range can work something like this
+                // var y = d3.scale.linear().domain([0, d3.max(data)]).range([h, 0]);
+
+                // create a line function that can convert data[] into x and y points
+                'var line = d3.svg.line()\n' +
+                '      .x(function(d,i) {\n' +
+                '            return x(i);\n' +
+                '        })\n' +
+                '        .y(function(d) {\n' +
+                '             return y(d);\n' +
+                '        })\n' +
+
+                // Add an SVG element with the desired dimensions and margin.
+                'var graph = d3.select("#graph").append("svg:svg")\n' +
+                '       .attr("width", w + m[1] + m[3])\n' +
+                '       .attr("height", h + m[0] + m[2])\n' +
+                '       .append("svg:g")\n' +
+                '       .attr("transform", "translate(" + m[3] + "," + m[0] + ")");\n' +
+
+                'var xAxis = d3.svg.axis().scale(x).tickSize(-h).tickSubdivide(true);\n' +
+                // Add the x-axis.
+                'graph.append("svg:g")\n' +
+                '       .attr("class", "x axis")\n' +
+                '       .attr("transform", "translate(0," + h + ")")\n' +
+                '        .call(xAxis);\n' +
+
+                'var yAxisLeft = d3.svg.axis().scale(y).ticks(4).orient("left");\n' +
+                // Add the y-axis to the left
+                'graph.append("svg:g")\n' +
+                '        .attr("class", "y axis")\n' +
+                '        .attr("transform", "translate(-25,0)")\n' +
+                '        .call(yAxisLeft);\n' +
+
+                'graph.append("svg:path").attr("d", line(data));'
         );
 
 
