@@ -30,17 +30,17 @@
         </div>
         <div class="tasks">
             <div class="massiv">
-                <span class="block_name">Массив</span>
-                <div class="infotype"></div>
+                <span class="block_name">Massiv</span>
+                <div class="block_massiv"></div>
             </div>
             <div class="block2 example">
                 <span class="block_name">Образец</span>
-                <iframe id="example_iframe" class="show_example"></iframe>
+                <iframe id="example_iframe" class="iframeblock"></iframe>
             </div>
             <div class="block2 itog">
-                <iframe id="result_iframe" class="check"></iframe>
+                <iframe id="result_iframe" class="iframeblock"></iframe>
                 <a class="btn newinfo" href="#"><i class="fa fa-info-circle"></i>Информация</a>
-                <a class="btn checkbtn" href="#"><i class="fa fa-thumbs-up" onclick="compareCanvas()"></i>CHECK</a>
+                <a class="btn checkbtn" onclick="compare()"><i class="fa fa-thumbs-up" ></i>CHECK</a>
             </div>
         </div>
     </div>
@@ -86,7 +86,7 @@
                 '\t.data(data)\n' +
                 '\t.enter().append("div")\n' +
                 '\t.style("width", function(d) { return x(d) + "px"; })\n' +
-                '\t.text(function(d) { return d; });';
+                '\t.text(function(d) { return d; });'
 
 
         var result_iframe = document.getElementById('result_iframe');
@@ -126,7 +126,7 @@
             in_result_iframe.close();
         });
 
-        function compareCanvas() {
+        function compare() {
             html2canvas(in_example_iframe.body, {
                 onrendered: function (ex_canvas) {
                     example_canvas = ex_canvas;
@@ -135,8 +135,8 @@
                             result_canvas = res_canvas;
                             var example_string = example_canvas.toDataURL("image/jpeg", 1.0);
                             var result_string = result_canvas.toDataURL("image/jpeg", 1.0);
-                            resemble(example_string).compareTo(result_string).onComplete(function (data) {
-                                console.log(data);
+                            resemble(result_string).compareTo(example_string).onComplete(function (data) {
+                                console.log(data.rawMisMatchPercentage);
 //                                var snackbarContainer = document.querySelector('#compare-result');
 //                                var text_data;
 //                                var masmatch_percentage = data.rawMisMatchPercentage;
