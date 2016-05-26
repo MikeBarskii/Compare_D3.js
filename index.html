@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D3.js</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+
+<body>
+<div class="container">
+    <header class="main-header">
+        <div class="header-container">Learning D3.JS</div>
+    </header>
+
+    <div class="row">
+
+        <div class="blocks">
+            <div class="displayb infotheory">
+                <span class="block_name">JavaScript</span>
+                <div class="infotype" id="js_editor">
+                </div>
+            </div>
+
+        </div>
+        <div class="tasks">
+            <div class="massiv">
+                <span class="block_name">Data</span>
+                <div class="block_massiv" style="text-align: center;margin-top: 15px;">[7, 4, 13, 5, 12, 10]
+                </div>
+            </div>
+            <div class="block2 example">
+                <span class="block_name">Образец</span>
+                <iframe id="example_iframe" class="iframeblock"></iframe>
+            </div>
+            <div class="block2 itog">
+                <iframe id="result_iframe" class="iframeblock"></iframe>
+                <label class="btn newinfo" id="lesson-info" style="font-family: 'Helvetica', sans-serif;"
+                       for="modal-1">Информация</label>
+                <button class="btn checkbtn" onclick="compare()"><i class="fa fa-thumbs-up"></i>CHECK</button>
+                <a class="btn next-level" href="second.html" disabled><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+                <button class="btn btn-default procent_result" id="result_button">0%</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Window -->
+
+    <div class="modal">
+        <input class="modal-open" id="modal-1" type="checkbox" hidden>
+        <div class="modal-wrap" aria-hidden="true" role="dialog">
+            <label class="modal-overlay" for="modal-1"></label>
+            <div class="modal-dialog">
+                <div class="modal-header" style="text-align: center">
+                    <h2>Наш первый урок по изучению D3.js</h2>
+                    <label class="btn-close" for="modal-1" aria-hidden="true">×</label>
+                </div>
+                <div class="modal-body">
+                    <p>Итак, вы решили изучить D3.js </p>
+                    <p>D3.js (или просто D3) это JavaScript-библиотека для обработки и визуализации данных.</p>
+                    <p>Она предоставляет удобные утилиты для обработки и загрузки массивов данных и создания
+                        DOM-элементов.</p>
+                    <p>В нашем примере с помощью D3.js мы выберим div, в котором будем работать.</p>
+                    <p>И построим по имеющимся данным пару блоков</p>
+                    <p>Но что-то он не показывается, наверное, мы где-то глупо опечатались.</p>
+                    <p>Найдите 2 неправильных символа и удалите или замените их. Наш редактор вам подскажет.</p>
+                </div>
+                <div class="modal-footer">
+                    <label class="btn btn-primary" for="modal-1">Отлично!</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="js/html2canvas.js"></script>
+    <script src="js/resemble.js"></script>
+    <script src="ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+        var example_canvas;
+        var result_canvas;
+
+        var example_html =
+                '<html>\n' +
+                '<head>\n' +
+                '<title>Example</title>\n' +
+                '<style>\n' +
+                '.compare div {\n' +
+                'font: 10px sans-serif;\n' +
+                'background-color: #AC46B4;\n' +
+                'border:1px solid black;\n' +
+                'text-align: right;\n' +
+                'padding: 3px;\n' +
+                'margin: 1px;\n' +
+                'margin-bottom: 2px;\n' +
+                'color: white;\n' +
+                '</style>\n' +
+                '</head>\n' +
+                '<body>\n' +
+                '\t<div class="compare"></div>\n' +
+                '\t<script src="http://d3js.org/d3.v3.min.js"  charset="utf-8"><\/script>\n' +
+                '</body>\n' +
+                '</html>';
+
+        var array_data = 'var data = [7, 4, 13, 5, 12, 10];';
+
+        var example_js =
+                'var x = d3.scale.linear()\n' +
+                '\t.domain([0, d3.max(data)])\n' +
+                '\t.range([0, 450]);\n' +
+                '\n' +
+                'd3.select(".compare")\n' +
+                '\t.selectAll("div")\n' +
+                '\t.data(data)\n' +
+                '\t.enter().append("div")\n' +
+                '\t.style("width", function(d) { return x(d) + "px"; })\n' +
+                '\t.text(function(d) { return d; });';
+
+        var example_iframe = document.getElementById('example_iframe');
+        var in_example_iframe = example_iframe.contentDocument || example_iframe.contentWindow.document;
+
+        var result_iframe = document.getElementById('result_iframe');
+        var in_result_iframe = result_iframe.contentDocument || result_iframe.contentWindow.document;
+
+        in_example_iframe.open();
+        in_example_iframe.write(example_html + "<script>" + array_data + example_js + "<\/script>");
+        in_example_iframe.close();
+
+        var js_editor = ace.edit("js_editor");
+        js_editor.setTheme("ace/theme/github");
+        js_editor.getSession().setMode("ace/mode/javascript");
+        js_editor.setValue(
+                'var x = d3.scale.linear()\n' +
+                '\t.domain([0, d3.max(data)])\n' +
+                '\t.range([0, 450]);Ж\n' +
+                '\n' +
+                'd3.select(".compare")\n' +
+                '\t.selectAll("div")\n' +
+                '\t.data(data)\n' +
+                '\t.enter().append("div")\n' +
+                '\t.style("width", function(d) { return x(d) + "px"; })\n' +
+                '\t.text(function(d) { return d; }):'
+        );
+
+
+        in_result_iframe.open();
+        in_result_iframe.write(example_html + "<script>" + array_data + js_editor.getValue() + "<\/script>");
+        in_result_iframe.close();
+
+        js_editor.getSession().on('change', function () {
+            in_result_iframe.open();
+            in_result_iframe.write(example_html + "<script>" + array_data + js_editor.getValue() + "<\/script>");
+            in_result_iframe.close();
+        });
+
+        function compare() {
+            <!-- Iframe to Canvas-->
+//            var ex_svg = in_example_iframe.body.querySelector('svg');
+//            var res_svg = in_result_iframe.body.querySelector('svg');
+//            console.log(res_svg.parentNode);
+
+            html2canvas(in_example_iframe.body, {
+                onrendered: function (ex_canvas) {
+                    example_canvas = ex_canvas;
+                    html2canvas(in_result_iframe.body, {
+                        onrendered: function (res_canvas) {
+                            result_canvas = res_canvas;
+                            var example_string = example_canvas.toDataURL();
+                            var result_string = result_canvas.toDataURL();
+                            <!-- Compare 2 Iframes -->
+                            resemble(example_string).compareTo(result_string).onComplete(function (data) {
+                                document.getElementById('result_button').innerHTML = Math.floor(100 - data.rawMisMatchPercentage) + ' %';
+                                $(document).ready(function () {
+                                    if (data.rawMisMatchPercentage <= 15) {
+                                        $("#next-level").prop('disabled', false);
+                                        $("#next-level").css('background-color', 'rgba(3,195,3,0.23')
+                                    }
+                                });
+                            });
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+    <script>
+        $(window).load(function () {
+            var first_open = get_cookie("open_modal-first");
+            if (first_open == null) {
+                setTimeout(function () {
+                    $('#lesson-info').trigger('click');
+                }, 100);
+                set_cookie("open_modal-first", "true");
+            }
+        });
+    </script>
+    <script>
+        function set_cookie(name, value, exp_y, exp_m, exp_d, path, domain, secure) {
+            var cookie_string = name + "=" + escape(value);
+
+            if (exp_y) {
+                var expires = new Date(exp_y, exp_m, exp_d);
+                cookie_string += "; expires=" + expires.toGMTString();
+            }
+
+            if (path)
+                cookie_string += "; path=" + escape(path);
+
+            if (domain)
+                cookie_string += "; domain=" + escape(domain);
+
+            if (secure)
+                cookie_string += "; secure";
+
+            document.cookie = cookie_string;
+        }
+        function get_cookie(cookie_name) {
+            var results = document.cookie.match('(^|;) ?' + cookie_name + '=([^;]*)(;|$)');
+
+            if (results)
+                return ( unescape(results[2]) );
+            else
+                return null;
+        }
+    </script>
+</div>
+</body>
+</html>
