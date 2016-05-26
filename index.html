@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
-
 <body>
 <div class="container">
     <header class="main-header">
@@ -39,7 +38,8 @@
                 <label class="btn newinfo" id="lesson-info" style="font-family: 'Helvetica', sans-serif;"
                        for="modal-1">Информация</label>
                 <button class="btn checkbtn" onclick="compare()"><i class="fa fa-thumbs-up"></i>CHECK</button>
-                <a class="btn next-level" href="second.html" disabled><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+                <a class="btn next-level" id="next-level" href="second.html" disabled><i
+                        class="fa fa-angle-double-right" aria-hidden="true"></i></a>
                 <button class="btn btn-default procent_result" id="result_button">0%</button>
             </div>
         </div>
@@ -173,8 +173,9 @@
                                 document.getElementById('result_button').innerHTML = Math.floor(100 - data.rawMisMatchPercentage) + ' %';
                                 $(document).ready(function () {
                                     if (data.rawMisMatchPercentage <= 15) {
+                                        set_cookie("finish_lesson-first", "true");
                                         $("#next-level").prop('disabled', false);
-                                        $("#next-level").css('background-color', 'rgba(3,195,3,0.23')
+                                        $("#next-level").css('background-color', 'rgba(3,195,3,0.23');
                                     }
                                 });
                             });
@@ -187,11 +188,16 @@
     <script>
         $(window).load(function () {
             var first_open = get_cookie("open_modal-first");
+            var finish_lesson = get_cookie("finish_lesson-first");
             if (first_open == null) {
                 setTimeout(function () {
                     $('#lesson-info').trigger('click');
                 }, 100);
                 set_cookie("open_modal-first", "true");
+            }
+            if (finish_lesson == true) {
+                $("#next-level").prop('disabled', false);
+                $("#next-level").css('background-color', 'rgba(3,195,3,0.23');
             }
         });
     </script>

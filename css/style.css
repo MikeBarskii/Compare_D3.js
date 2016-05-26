@@ -204,6 +204,7 @@ a {
 .modal-body {
     text-align: justify;
     padding: 15px 20px;
+    border: 1px solid rgba(0, 0, 0, 0.32);
 }
 
 .modal-body p {
@@ -244,8 +245,9 @@ a {
 .btn-primary:hover {
     background: #66A1D3;
 }
-.next-level{
-    float:right;
+
+.next-level {
+    float: right;
     margin-right: 15px;
-    padding:4px 4px 4px 10px;;
+    padding: 4px 4px 4px 10px;;
 }

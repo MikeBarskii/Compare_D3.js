@@ -39,9 +39,11 @@
                 <label class="btn newinfo" id="lesson-info" style="font-family: 'Helvetica', sans-serif;"
                        for="modal-1">Информация</label>
                 <button class="btn checkbtn" onclick="compare()"><i class="fa fa-thumbs-up"></i>CHECK</button>
-                <a class="btn next-level" href="second.html" disabled><i class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+                <a class="btn next-level" id="next-level" href="third.html" disabled><i class="fa fa-angle-double-right"
+                                                                                        aria-hidden="true"></i></a>
                 <button class="btn btn-default procent_result" id="result_button">0%</button>
-                <a class="btn next-level" href="index.html" style="margin-right: 0px"><i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+                <a class="btn next-level" href="index.html" style="margin-right: 0px"><i class="fa fa-angle-double-left"
+                                                                                         aria-hidden="true"></i></a>
             </div>
         </div>
     </div>
@@ -52,20 +54,23 @@
         <input class="modal-open" id="modal-1" type="checkbox" hidden>
         <div class="modal-wrap" aria-hidden="true" role="dialog">
             <label class="modal-overlay" for="modal-1"></label>
-            <div class="modal-dialog">
+            <div class="modal-dialog" style="top:10%">
                 <div class="modal-header" style="text-align: center">
-                    <h2>Наш первый урок по изучению D3.js</h2>
+                    <h2>Продолжаем изучение D3.js</h2>
                     <label class="btn-close" for="modal-1" aria-hidden="true">×</label>
                 </div>
                 <div class="modal-body">
-                    <p>Итак, вы решили изучить D3.js </p>
-                    <p>D3.js (или просто D3) это JavaScript-библиотека для обработки и визуализации данных.</p>
-                    <p>Она предоставляет удобные утилиты для обработки и загрузки массивов данных и создания
-                        DOM-элементов.</p>
-                    <p>В нашем примере с помощью D3.js мы выберим div, в котором будем работать.</p>
-                    <p>И построим по имеющимся данным пару блоков</p>
-                    <p>Но что-то он не показывается, наверное, мы где-то глупо опечатались.</p>
-                    <p>Найдите 2 неправильных символа и удалите или замените их. Наш редактор вам подскажет.</p>
+                    <p>Итак, мы построили наш график!</p>
+                    <p><b>d3.select(".compare")</b> - используется для выбора элемента, где class = compare;</p>
+                    <p><b>.data(data)</b> - передает на вход наши параметры;</p>
+                    <p><b>.style("width", ...)</b> - задает ширину блоков в зависимости от их значений;</p>
+                    <p><b>.text(function(d) { return d; });</b> - подписывает текст;</p>
+                    <p>Но чтобы наш график помещался в наше окошко необходимо ограничить его изображение.</p>
+                    <p>Не помешала бы и защита от дурака:</p>
+                    <p><b>.domain([0, ...])</b>
+                        <b> .range([0, 450]);</b></p>
+                    <p>В этих строчках мы и ограничим наш график по наибольшему числу из заданных.</p>
+                    <p>Но что-то пошло не так, и мы неправильно его урезали. Вперед искать ошибку!</p>
                 </div>
                 <div class="modal-footer">
                     <label class="btn btn-primary" for="modal-1">Отлично!</label>
@@ -133,15 +138,15 @@
         js_editor.getSession().setMode("ace/mode/javascript");
         js_editor.setValue(
                 'var x = d3.scale.linear()\n' +
-                '\t.domain([0, d3.max(data)])\n' +
-                '\t.range([0, 450]);Ж\n' +
+                '\t.domain([0, d3.min(data)])\n' +
+                '\t.range([0, 450]);\n' +
                 '\n' +
                 'd3.select(".compare")\n' +
                 '\t.selectAll("div")\n' +
                 '\t.data(data)\n' +
                 '\t.enter().append("div")\n' +
                 '\t.style("width", function(d) { return x(d) + "px"; })\n' +
-                '\t.text(function(d) { return d; }):'
+                '\t.text(function(d) { return d; });'
         );
 
 
@@ -157,10 +162,6 @@
 
         function compare() {
             <!-- Iframe to Canvas-->
-//            var ex_svg = in_example_iframe.body.querySelector('svg');
-//            var res_svg = in_result_iframe.body.querySelector('svg');
-//            console.log(res_svg.parentNode);
-
             html2canvas(in_example_iframe.body, {
                 onrendered: function (ex_canvas) {
                     example_canvas = ex_canvas;
@@ -174,8 +175,9 @@
                                 document.getElementById('result_button').innerHTML = Math.floor(100 - data.rawMisMatchPercentage) + ' %';
                                 $(document).ready(function () {
                                     if (data.rawMisMatchPercentage <= 15) {
+                                        set_cookie("finish_lesson-second", "true");
                                         $("#next-level").prop('disabled', false);
-                                        $("#next-level").css('background-color', 'rgba(3,195,3,0.23')
+                                        $("#next-level").css('background-color', 'rgba(3,195,3,0.23');
                                     }
                                 });
                             });
@@ -188,11 +190,16 @@
     <script>
         $(window).load(function () {
             var first_open = get_cookie("open_modal-second");
+            var finish_lesson = get_cookie("finish_lesson-second");
             if (first_open == null) {
                 setTimeout(function () {
                     $('#lesson-info').trigger('click');
                 }, 100);
                 set_cookie("open_modal-second", "true");
+            }
+            if (finish_lesson == true) {
+                $("#next-level").prop('disabled', false);
+                $("#next-level").css('background-color', 'rgba(3,195,3,0.23');
             }
         });
     </script>
