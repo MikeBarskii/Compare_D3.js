@@ -34,12 +34,21 @@
                 <iframe id="example_iframe" class="iframeblock"></iframe>
             </div>
             <div class="block2 itog">
+                <div style="border-bottom: 2px solid black;">
+                    <button class="btn" onclick="user_result()">Результат</button>
+                    <button class="btn" onclick="show_diff()">Различия</button>
+                </div>
                 <iframe id="result_iframe" class="iframeblock"></iframe>
+                <div id="diff_div" class="iframeblock" style="display: none;min-height: 198px;"></div>
+
                 <label class="btn newinfo" id="lesson-info" style="font-family: 'Helvetica', sans-serif;"
                        for="modal-1">Информация</label>
+
                 <button class="btn checkbtn" onclick="compare()"><i class="fa fa-thumbs-up"></i>CHECK</button>
-                <a class="btn next-level" id="next-level" href="second.html" disabled><i
+
+                <a class="btn next-level" id="next-level" href="second.html" style="pointer-events: none"><i
                         class="fa fa-angle-double-right" aria-hidden="true"></i></a>
+
                 <button class="btn btn-default procent_result" id="result_button">0%</button>
             </div>
         </div>
@@ -62,7 +71,7 @@
                     <p>Она предоставляет удобные утилиты для обработки и загрузки массивов данных и создания
                         DOM-элементов.</p>
                     <p>В нашем примере с помощью D3.js мы выберим div, в котором будем работать.</p>
-                    <p>И построим по имеющимся данным пару блоков</p>
+                    <p>И построим по имеющимся данным пару блоков.</p>
                     <p>Но что-то он не показывается, наверное, мы где-то глупо опечатались.</p>
                     <p>Найдите 2 неправильных символа и удалите или замените их. Наш редактор вам подскажет.</p>
                 </div>
@@ -154,6 +163,7 @@
             in_result_iframe.close();
         });
 
+
         function compare() {
             <!-- Iframe to Canvas-->
 //            var ex_svg = in_example_iframe.body.querySelector('svg');
@@ -171,35 +181,32 @@
                             <!-- Compare 2 Iframes -->
                             resemble(example_string).compareTo(result_string).onComplete(function (data) {
                                 document.getElementById('result_button').innerHTML = Math.floor(100 - data.rawMisMatchPercentage) + ' %';
-                                $(document).ready(function () {
-                                    if (data.rawMisMatchPercentage <= 15) {
-                                        set_cookie("finish_lesson-first", "true");
-                                        $("#next-level").prop('disabled', false);
-                                        $("#next-level").css('background-color', 'rgba(3,195,3,0.23');
-                                    }
-                                });
+                                var image = new Image();
+                                image.src = data.getImageDataUrl();
+                                document.getElementById("diff_div").appendChild(image);
+                                if (data.rawMisMatchPercentage <= 15) {
+                                    set_cookie("finish_lesson-first", "true");
+                                    $("#next-level").css('pointer-events', 'auto');
+                                    $("#next-level").css('background-color', 'rgba(3,195,3,0.23');
+                                }
                             });
                         }
                     });
                 }
             });
         }
-    </script>
-    <script>
-        $(window).load(function () {
-            var first_open = get_cookie("open_modal-first");
-            var finish_lesson = get_cookie("finish_lesson-first");
-            if (first_open == null) {
-                setTimeout(function () {
-                    $('#lesson-info').trigger('click');
-                }, 100);
-                set_cookie("open_modal-first", "true");
-            }
-            if (finish_lesson == true) {
-                $("#next-level").prop('disabled', false);
-                $("#next-level").css('background-color', 'rgba(3,195,3,0.23');
-            }
-        });
+        function user_result() {
+            $(document).ready(function () {
+                $("#diff_div").css('display', 'none');
+                $("#result_iframe").css('display', 'block');
+            });
+        }
+        function show_diff() {
+            $(document).ready(function () {
+                $("#diff_div").css('display', 'block');
+                $("#result_iframe").css('display', 'none');
+            });
+        }
     </script>
     <script>
         function set_cookie(name, value, exp_y, exp_m, exp_d, path, domain, secure) {
@@ -229,6 +236,23 @@
             else
                 return null;
         }
+    </script>
+    <script>
+        $(window).load(function () {
+            var first_open = get_cookie("open_modal-first");
+            var finish_lesson = get_cookie("finish_lesson-first");
+            if (first_open == null) {
+                setTimeout(function () {
+                    $('#lesson-info').trigger('click');
+                }, 100);
+                set_cookie("open_modal-first", "true");
+            }
+            console.log(finish_lesson);
+            if (finish_lesson) {
+                $("#next-level").css('pointer-events', 'auto');
+                $("#next-level").css('background-color', 'rgba(3,195,3,0.23');
+            }
+        });
     </script>
 </div>
 </body>

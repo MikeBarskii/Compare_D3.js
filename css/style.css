@@ -51,9 +51,10 @@ a {
 
 .iframeblock {
     border: 0;
-    min-height: 221px;
+    min-height: 200px;
     text-align: left;
     width: 100%;
+    overflow: hidden;
 }
 
 .infotype {

@@ -67,17 +67,10 @@
                     <label class="btn-close" for="modal-1" aria-hidden="true">×</label>
                 </div>
                 <div class="modal-body">
-                    <p>Итак, мы построили наш график!</p>
-                    <p><b>d3.select(".compare")</b> - используется для выбора элемента, где class = compare;</p>
-                    <p><b>.data(data)</b> - передает на вход наши параметры;</p>
-                    <p><b>.style("width", ...)</b> - задает ширину блоков в зависимости от их значений;</p>
-                    <p><b>.text(function(d) { return d; });</b> - подписывает текст;</p>
-                    <p>Но чтобы наш график помещался в наше окошко необходимо ограничить его изображение.</p>
-                    <p>Не помешала бы и защита от дурака:</p>
-                    <p><b>.domain([0, ...])</b>
-                        <b> .range([0, 450]);</b></p>
-                    <p>В этих строчках мы и ограничим наш график по наибольшему числу из заданных.</p>
-                    <p>Но что-то пошло не так, и мы неправильно его урезали. Вперед искать ошибку!</p>
+                    <p>А теперь пошалим со стилями нашего графика</p>
+                    <p><b>.style('свойство','значение')</b> - так задаются стили в d3</p>
+                    <p>Попробуйте подобрать стили своего графика так, чтобы он совпал с нашим.</p>
+                    <p>Подсказка: RGB + текст, фон и границы</p>
                 </div>
                 <div class="modal-footer">
                     <label class="btn btn-primary" for="modal-1">Отлично!</label>
@@ -128,7 +121,10 @@
                 '\t.data(data)\n' +
                 '\t.enter().append("div")\n' +
                 '\t.style("width", function(d) { return x(d) + "px"; })\n' +
-                '\t.text(function(d) { return d; });';
+                '\t.text(function(d) { return d; })' +
+                '\t.style("color", "red")\n' +
+                '\t.style("background", "blue")\n' +
+                '\t.style("border", "1px solid green");';
 
         var example_iframe = document.getElementById('example_iframe');
         var in_example_iframe = example_iframe.contentDocument || example_iframe.contentWindow.document;
@@ -145,7 +141,7 @@
         js_editor.getSession().setMode("ace/mode/javascript");
         js_editor.setValue(
                 'var x = d3.scale.linear()\n' +
-                '\t.domain([0, d3.min(data)])\n' +
+                '\t.domain([0, d3.max(data)])\n' +
                 '\t.range([0, 450]);\n' +
                 '\n' +
                 'd3.select(".compare")\n' +
@@ -183,8 +179,8 @@
                                 var image = new Image();
                                 image.src = data.getImageDataUrl();
                                 document.getElementById("diff_div").appendChild(image);
-                                if (data.rawMisMatchPercentage <= 15) {
-                                    set_cookie("finish_lesson-second", "true");
+                                if (data.rawMisMatchPercentage <= 5) {
+                                    set_cookie("finish_lesson-third", "true");
                                     $("#next-level").css('pointer-events', 'auto');
                                     $("#next-level").css('background-color', 'rgba(3,195,3,0.23');
                                 }
@@ -197,13 +193,13 @@
     </script>
     <script>
         $(window).load(function () {
-            var first_open = get_cookie("open_modal-second");
-            var finish_lesson = get_cookie("finish_lesson-second");
+            var first_open = get_cookie("open_modal-third");
+            var finish_lesson = get_cookie("finish_lesson-third");
             if (first_open == null) {
                 setTimeout(function () {
                     $('#lesson-info').trigger('click');
                 }, 100);
-                set_cookie("open_modal-second", "true");
+                set_cookie("open_modal-third", "true");
             }
             if (finish_lesson) {
                 $("#next-level").css('pointer-events', 'auto');
